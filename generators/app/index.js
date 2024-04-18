@@ -34,11 +34,5 @@ export default class extends Generator {
     });
   }
 
-  install() {
-    this.installDependencies({
-      npm: false,
-      bower: false,
-      yarn: false
-    });
-  }
+  install() {}
 }
