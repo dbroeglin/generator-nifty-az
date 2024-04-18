@@ -8,10 +8,10 @@ export default class extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
-    this.argument("appname", { type: String, required: true });
+    this.argument("destination", { type: String, required: true });
 
-    // And you can then access it later; e.g.
-    this.log(this.options.appname);
+    this.log("Generating in '" + this.options.destination + "'");
+    this.destinationRoot(this.options.destination);
   }
 
   prompting() {
