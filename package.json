@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "chalk": "^2.1.0",
+    "cheerio": "^1.0.0-rc.12",
     "yeoman-generator": "^7.1.1",
     "yosay": "^2.0.2"
   },
