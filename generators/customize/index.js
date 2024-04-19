@@ -14,9 +14,30 @@ export default class extends Generator {
         name: "title",
         message: "Your Demo's title",
         default: this.config.get("title") || "Nifty AZ Demo"
+      },
+      {
+        type: "input",
+        name: "question1",
+        message: "Example question 1",
+        default: this.config.get("question1") || ""
+      },
+      {
+        type: "input",
+        name: "question2",
+        message: "Example question 2",
+        default: this.config.get("question2") || ""
+      },
+      {
+        type: "input",
+        name: "question3",
+        message: "Example question 3",
+        default: this.config.get("question3") || ""
       }
     ]);
     this.config.set("title", this.answers.title);
+    this.config.set("question1", this.answers.question1);
+    this.config.set("question2", this.answers.question2);
+    this.config.set("question3", this.answers.question3);
   }
 
   writing() {
@@ -33,6 +54,20 @@ export default class extends Generator {
         /<h3 className={styles.headerTitle}>[^<]+<\/h3>/,
         "<h3 className={styles.headerTitle}>" + this.answers.title + "</h3>"
       )
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("ExampleList.tsx.tt"),
+      this.destinationPath(
+        "app/frontend/src/components/Example/ExampleList.tsx"
+      ),
+      {
+        questions: [
+          this.answers.question1,
+          this.answers.question2,
+          this.answers.question3
+        ]
+      }
     );
   }
 
