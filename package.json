@@ -1,6 +1,6 @@
 {
   "name": "generator-nifty-az",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A collection of useful Azure apps generators",
   "homepage": "https://github.com/dbroeglin/generator-nifty-az",
   "author": {
