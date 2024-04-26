@@ -1,6 +1,6 @@
 {
   "name": "generator-nifty-az",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A collection of useful Azure apps generators",
   "homepage": "https://github.com/dbroeglin/generator-nifty-az",
   "author": {
@@ -45,6 +45,7 @@
   "dependencies": {
     "chalk": "^2.1.0",
     "cheerio": "^1.0.0-rc.12",
+    "tmp": "^0.2.3",
     "yeoman-generator": "^7.1.1",
     "yosay": "^2.0.2"
   },
