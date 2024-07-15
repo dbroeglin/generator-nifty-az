@@ -56,6 +56,12 @@ export default class extends Generator {
         name: "placeholder",
         message: "Placeholder in question input field",
         default: this.config.get("placeholder") || ""
+      },
+      {
+        type: "input",
+        name: "backgroundColor",
+        message: "Background color",
+        default: this.config.get("backgroundColor") || "#222222"
       }
     ]);
     this.config.set("title", this.answers.title);
@@ -113,6 +119,12 @@ export default class extends Generator {
         `placeholder="${this.escapeJavascriptString(this.answers.placeholder)}"`
       );
     }
+
+    this.replaceInFile(
+      "app/frontend/src/pages/layout/Layout.module.css",
+      /background-color: #222222/,
+      `background-color: ${this.answers.backgroundColor}`
+    );
   }
 
   install() {}
