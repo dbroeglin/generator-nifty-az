@@ -16,10 +16,20 @@ export default class extends Generator {
       return str && str.trim() !== "";
     };
 
-    this.replaceInFile = function(fileName, search, replace) {
+    this.replaceInFile = function(
+      fileName,
+      search,
+      replace,
+      replaceAll = false
+    ) {
       const fileContent = this.readDestination(fileName);
 
-      this.writeDestination(fileName, fileContent.replace(search, replace));
+      this.writeDestination(
+        fileName,
+        replaceAll
+          ? fileContent.split(search).join(replace)
+          : fileContent.replace(search, replace)
+      );
     };
   }
 
@@ -69,6 +79,7 @@ export default class extends Generator {
     this.config.set("question2", this.answers.question2);
     this.config.set("question3", this.answers.question3);
     this.config.set("placeholder", this.answers.placeholder);
+    this.config.set("backgroundColor", this.answers.backgroundColor);
   }
 
   writing() {
@@ -123,7 +134,8 @@ export default class extends Generator {
     this.replaceInFile(
       "app/frontend/src/pages/layout/Layout.module.css",
       /background-color: #222222/,
-      `background-color: ${this.answers.backgroundColor}`
+      `background-color: ${this.answers.backgroundColor}`,
+      true
     );
   }
 
