@@ -5,6 +5,24 @@ import yosay from "yosay";
 import * as cheerio from "cheerio";
 
 export default class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
+
+    this.escapeJavascriptString = function(str) {
+      return str.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    };
+
+    this.notEmpty = function(str) {
+      return str && str.trim() !== "";
+    };
+
+    this.replaceInFile = function(fileName, search, replace) {
+      const fileContent = this.readDestination(fileName);
+
+      this.writeDestination(fileName, fileContent.replace(search, replace));
+    };
+  }
+
   async prompting() {
     this.log(yosay(`Welcome to ${chalk.red("Nifty AZ")} generator!`));
 
@@ -32,43 +50,69 @@ export default class extends Generator {
         name: "question3",
         message: "Example question 3",
         default: this.config.get("question3") || ""
+      },
+      {
+        type: "input",
+        name: "placeholder",
+        message: "Placeholder in question input field",
+        default: this.config.get("placeholder") || ""
       }
     ]);
     this.config.set("title", this.answers.title);
     this.config.set("question1", this.answers.question1);
     this.config.set("question2", this.answers.question2);
     this.config.set("question3", this.answers.question3);
+    this.config.set("placeholder", this.answers.placeholder);
   }
 
   writing() {
+    var demo = this.config.get("demo");
+    this.log(`Customizing Demo '${demo}'...`);
+
     var fileName = "app/frontend/index.html";
     const page = cheerio.load(this.readDestination(fileName));
     page("title").text(this.answers.title);
     this.writeDestination(fileName, page.html());
 
-    fileName = "app/frontend/src/pages/layout/Layout.tsx";
-    const file = this.readDestination(fileName);
-    this.writeDestination(
-      fileName,
-      file.replace(
-        /<h3 className={styles.headerTitle}>[^<]+<\/h3>/,
-        "<h3 className={styles.headerTitle}>" + this.answers.title + "</h3>"
-      )
+    this.replaceInFile(
+      "app/frontend/src/pages/layout/Layout.tsx",
+      /<h3 className={styles.headerTitle}>[^<]+<\/h3>/,
+      "<h3 className={styles.headerTitle}>" + this.answers.title + "</h3>"
     );
 
+    this.log(
+      `Customizing ExampleList.tsx from template ${demo}/ExampleList.tsx.tt...`
+    );
     this.fs.copyTpl(
-      this.templatePath("ExampleList.tsx.tt"),
+      this.templatePath(`${demo}/ExampleList.tsx.tt`),
       this.destinationPath(
         "app/frontend/src/components/Example/ExampleList.tsx"
       ),
       {
         questions: [
-          this.answers.question1,
-          this.answers.question2,
-          this.answers.question3
+          this.escapeJavascriptString(this.answers.question1),
+          this.escapeJavascriptString(this.answers.question2),
+          this.escapeJavascriptString(this.answers.question3)
         ]
       }
     );
+
+    if (this.notEmpty(this.answers.placeholder)) {
+      const oneshotFilename =
+        demo === "Azure-Samples/azure-search-openai-demo"
+          ? "app/frontend/src/pages/ask/Ask.tsx"
+          : "app/frontend/src/pages/oneshot/OneShot.tsx";
+      this.replaceInFile(
+        oneshotFilename,
+        /placeholder="Example: Does my plan cover annual eye exams\?"/,
+        `placeholder="${this.escapeJavascriptString(this.answers.placeholder)}"`
+      );
+      this.replaceInFile(
+        "app/frontend/src/pages/chat/Chat.tsx",
+        /placeholder="Type a new question \(e.g. does my plan cover annual eye exams\?\)"/,
+        `placeholder="${this.escapeJavascriptString(this.answers.placeholder)}"`
+      );
+    }
   }
 
   install() {}
