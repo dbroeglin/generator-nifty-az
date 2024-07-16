@@ -12,6 +12,13 @@ export default class extends Generator {
       return str.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
     };
 
+    this.escapeJsx = function(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/"/g, "&quot;");
+    };
+
     this.notEmpty = function(str) {
       return str && str.trim() !== "";
     };
@@ -94,7 +101,9 @@ export default class extends Generator {
     this.replaceInFile(
       "app/frontend/src/pages/layout/Layout.tsx",
       /<h3 className={styles.headerTitle}>[^<]+<\/h3>/,
-      "<h3 className={styles.headerTitle}>" + this.answers.title + "</h3>"
+      "<h3 className={styles.headerTitle}>" +
+        this.escapeJsx(this.answers.title) +
+        "</h3>"
     );
 
     this.log(
@@ -122,12 +131,12 @@ export default class extends Generator {
       this.replaceInFile(
         oneshotFilename,
         /placeholder="Example: Does my plan cover annual eye exams\?"/,
-        `placeholder="${this.escapeJavascriptString(this.answers.placeholder)}"`
+        `placeholder="${this.escapeJsx(this.answers.placeholder)}"`
       );
       this.replaceInFile(
         "app/frontend/src/pages/chat/Chat.tsx",
         /placeholder="Type a new question \(e.g. does my plan cover annual eye exams\?\)"/,
-        `placeholder="${this.escapeJavascriptString(this.answers.placeholder)}"`
+        `placeholder="${this.escapeJsx(this.answers.placeholder)}"`
       );
     }
 
