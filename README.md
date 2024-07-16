@@ -10,17 +10,36 @@ npm install -g yo
 npm install -g generator-nifty-az
 ```
 
-Then generate your new demo:
+### Generate your new demo
 
 ```bash
 yo nifty-az hello-demo
 ```
 
-To customize your demo:
+### Customize your demo
+
+See the generated `README.md` for additional information about the deployment process.
 
 ```bash
 cd hello-demo
 yo nifty-az:customize
+```
+
+### Deploy by running
+
+See the generated `README.md` for additional information about the deployment process.
+
+#### Python version
+
+```bash
+azd up
+```
+
+#### Java version
+
+```bash
+cd deploy/aca
+azd up
 ```
 
 ## Licenses
