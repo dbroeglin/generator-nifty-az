@@ -1,4 +1,4 @@
-**UPDATE**: *This repository is archived effective December 12, 2024. Development of the Nifty AZ Generator continues at [https://github.com/nifty-az/generator-nifty-az](https://aka.ms/rai-collection](https://github.com/nifty-az/generator-nifty-az) ).*
+**UPDATE**: *This repository is archived effective December 12, 2024. Development of the Nifty AZ Generator continues at [https://github.com/nifty-az/generator-nifty-az](https://github.com/nifty-az/generator-nifty-az).*
 
 
 # generator-nifty-az 
